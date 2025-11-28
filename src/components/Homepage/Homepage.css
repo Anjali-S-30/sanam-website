@@ -1,0 +1,188 @@
+/* src/components/Homepage/Homepage.css */
+
+/* ===================================== */
+/* 🌈 Common styles (same as before) */
+/* ===================================== */
+.swiper-slide-4ffe {
+  background-color: rgba(51, 51, 51, 1);
+}
+
+.swiper-slide-content-2f5e {
+  padding: 48px 48px;
+  flex-direction: column;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-slide-text-78dc {
+  color: rgba(255, 255, 255, 1);
+  text-align: left;
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: bold;
+}
+
+/* ===================================== */
+/* 🎸 Band slides (desktop) */
+/* ===================================== */
+.band-slide {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  box-sizing: border-box;
+}
+
+.band-member-card {
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.band-member-name {
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 0.25rem;
+}
+
+.band-member-title {
+  font-size: clamp(0.875rem, 1.2vw, 1.1rem);
+  font-weight: 500;
+  color: #555555;
+  margin-bottom: 1rem;
+}
+
+.band-member-description {
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  color: #222222;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 90%;
+  text-align: center;
+}
+
+/* ===================================== */
+/* 📱 Mobile Slide Styles */
+/* ===================================== */
+/* ===================================== */
+/* 📱 Mobile Slide Styles (FINAL — Fixed Card, Always Visible) */
+/* ===================================== */
+
+.mobile-slide-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Background Image */
+.mobile-slide-background {
+  position: absolute;
+  inset: 0;
+}
+
+.mobile-slide-background img {
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Add subtle dark overlay for readability */
+.mobile-slide-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.2));
+}
+
+/* Fixed Card Container */
+.mobile-slide-card {
+  position: absolute;
+  bottom: 4rem;
+  left: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+/* Glassy Look */
+.glassy-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 1.25rem;
+  padding: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  color: white;
+}
+
+/* Card Content */
+.mobile-card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mobile-card-text {
+  flex: 1;
+}
+
+/* Name + Title */
+.mobile-card-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+}
+
+.mobile-card-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ddd;
+  margin-bottom: 0.5rem;
+}
+
+/* ✅ Description — always visible */
+.mobile-card-description {
+  font-size: 0.9rem;
+  color: #f5f5f5;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Footer link */
+.mobile-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #e5e5e5;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobile-card-footer:hover {
+  color: white;
+}
+
+/* Profile Image */
+.mobile-card-image {
+  position: relative;
+  height: 110px;
+  width: 80px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-card-image img {
+  object-fit: cover;
+}
