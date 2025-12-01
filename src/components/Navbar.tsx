@@ -4,13 +4,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // 1. Import useRouter
 import { useNavbar } from "@/context/NavbarContext";
 
 import Logo from "./icons/Logo";
 import NameLogo from "./icons/NameLogo";
 
-const NAV_LINKS = [
+type NavLink = {
+  href: string;
+  label: string;
+};
+
+const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/music", label: "Music" },
   { href: "/tour", label: "Tour" },
@@ -23,25 +28,42 @@ export default function Navbar() {
   const { navbarStyle } = useNavbar();
   const { background, logo, text, hamburger } = navbarStyle;
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const pathname = usePathname();
+  const router = useRouter(); // 2. Initialize Router
+
+  useEffect(() => {
+    if (open) setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (open) {
-      setOpen(false);
-    }
-  }, [pathname]);
-  
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [open]);
+
+  // 3. SPECIAL FUNCTION TO HANDLE SCROLL
+  const handleSubscribeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault(); // Stop default Link behavior
+    setOpen(false); // Close mobile menu
+
+    // Check if we are already on the Home Page
+    if (pathname === "/") {
+      const element = document.getElementById("subscribe");
+      if (element) {
+        // Smooth scroll to the element
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // If on another page, navigate to home with hash
+      router.push("/#subscribe");
+    }
+  };
 
   return (
     <motion.header
@@ -52,32 +74,62 @@ export default function Navbar() {
       role="banner"
     >
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6"
+        className="flex w-full items-center justify-between px-4 py-3 md:px-6 lg:px-8"
         aria-label="Global"
       >
+        {/* LOGO SECTION */}
         <Link href="/" className="flex items-center gap-3" aria-label="SANAM — Home">
-          {/* --- SIZE INCREASED HERE (from h-9 w-9) --- */}
           <Logo className={`h-7 w-7 ${logo}`} />
-          {/* --- SIZE INCREASED HERE (from 1.5rem) --- */}
           <NameLogo
-            style={{ height: '1.7rem', width: 'auto' }}
+            style={{ height: "1.7rem", width: "auto" }}
             className={`object-contain ${logo}`}
           />
         </Link>
 
-        {/* Desktop nav */}
+        {/* DESKTOP NAV */}
         <div className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((item) => {
-             const isActive = pathname === item.href;
-             return (
-               <Link key={item.href} href={item.href} className={`relative px-1 text-sm font-medium transition-colors hover:opacity-75 ${isActive ? 'font-bold' : ''} ${text}`}>
-                 {item.label}
-               </Link>
-             );
+            
+            // ----------------------------------------------------
+            // FIX IS HERE: SUBSCRIBE BUTTON LOGIC
+            // ----------------------------------------------------
+            if (item.label === "Subscribe") {
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={handleSubscribeClick} // Attach the custom handler
+                  className={`ml-2 rounded-full border px-6 py-2 text-sm font-medium uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 ${text} border-current`}
+                >
+                  {item.label}
+                </Link>
+              );
+            }
+
+            // STANDARD LINKS
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`group relative px-1 text-sm uppercase tracking-widest ${text}`}
+              >
+                <span className="invisible font-medium" aria-hidden="true">
+                  {item.label}
+                </span>
+                <span
+                  className={`absolute inset-0 flex items-center justify-center transition-all ${
+                    isActive ? "font-medium" : "font-light group-hover:font-medium"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </Link>
+            );
           })}
         </div>
 
-        {/* Mobile menu button */}
+        {/* MOBILE MENU BUTTON */}
         <button
           className="relative z-50 inline-flex items-center justify-center rounded-md p-2 md:hidden"
           aria-label="Toggle menu"
@@ -92,23 +144,47 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Full-screen mobile menu */}
+      {/* FULL SCREEN MOBILE MENU */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 z-40 h-screen w-screen bg-black/50 backdrop-blur-lg md:hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-40 h-screen w-screen bg-black/90 backdrop-blur-lg md:hidden"
           >
             <div className="h-full w-full overflow-y-auto px-6 pt-24 pb-12">
-              <div className="space-y-8">
-                {NAV_LINKS.map((item) => (
-                  <Link key={item.href} href={item.href} className="block text-3xl font-bold text-white">
-                    {item.label}
-                  </Link>
-                ))}
+              <div className="flex flex-col items-center space-y-8 text-center">
+                {NAV_LINKS.map((item) => {
+                  
+                  // Mobile Subscribe Button Style
+                  if (item.label === "Subscribe") {
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={handleSubscribeClick} // Attach handler here too
+                        className="mt-4 rounded-full border border-white px-8 py-3 text-xl font-medium uppercase tracking-widest text-white transition-transform active:scale-95"
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  }
+
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className={`block text-xl uppercase tracking-widest text-white transition-all 
+                        ${isActive ? "font-medium" : "font-light hover:font-medium"}`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
