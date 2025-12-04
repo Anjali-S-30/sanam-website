@@ -4,9 +4,9 @@ export const bandMembers = [
   {
     id: 1,
     name: "Sanam Puri",
-    title: "Lead Vocals & Composer",
+    title: "Vocals & Lead Composer",
     description:
-      "The visionary behind the band’s signature sound, blending classic melodies with modern rhythms.",
+      "The face of the band and its defining voice. Sanam is the band leader with vision and emotion. A singer, songwriter, and dreamer whose voice carries words straight into the hearts of listeners across the world. His melodies bridge nostalgia and newness, making every song unforgettable.",
     img: "/faces/sanam0.jpg",
     imgDetail: "/faces/sanam00.jpg", // Added detail image
     instaUrl: "https://www.instagram.com/sanampuri/",
@@ -14,9 +14,9 @@ export const bandMembers = [
   {
     id: 2,
     name: "Venky S",
-    title: "Bass & Rhythm",
+    title: "Bass & Arranger",
     description:
-      "The anchor of the band, providing the solid, groovy foundation that gets everyone moving.",
+      "The sonic architect of the band. Venky's deep understanding of sound, harmony, and groove turns every track into an experience. His basslines and arrangements give SANAM its pulse. Thoughtful, musical, and alive with soul.",
     img: "/faces/venky0.jpg",
     imgDetail: "/faces/venky00.jpg", // Added detail image
     instaUrl: "https://www.instagram.com/venkysbass/",
@@ -24,9 +24,9 @@ export const bandMembers = [
   {
     id: 3,
     name: "Keshav Dhanraj",
-    title: "Drums & Percussion",
+    title: "Drums & Programmer",
     description:
-      "The heartbeat of the music, driving the energy with powerful and precise percussion.",
+      "The driving force behind SANAM, on and off the stage. Keshav is the backbone who turns new vision into reality with direction and creativity. A drummer, programmer and visionary. An unshakable anchor for SANAM.",
     img: "/faces/keshav0.jpg",
     imgDetail: "/faces/keshav00.jpg", // Added detail image
     instaUrl: "https://www.instagram.com/keshavdhanraj/",
@@ -34,9 +34,9 @@ export const bandMembers = [
   {
     id: 4,
     name: "Samar Puri",
-    title: "Guitars & Producer",
+    title: "Guitars, Lyrics & Editor",
     description:
-      "A master of texture and tone, crafting the intricate guitar work that defines SANAM’s music.",
+      "The storyteller of SANAM. Samar’s video edits and lyrics bring emotion and depth, while his creative direction keeps the visual and lyrical world honest and connected. His simple yet powerful artistry gives SANAM the soul and sincerity the band is known for.",
     img: "/faces/samar0.jpeg",
     imgDetail: "/faces/samar00.jpg", // Added detail image
     instaUrl: "https://www.instagram.com/samarpuri/",
