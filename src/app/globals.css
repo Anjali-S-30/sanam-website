@@ -43,3 +43,14 @@ html {
   border-radius: 10px;
   transition: width 0.3s ease;
 }
+/* Make inner swiper fill available height */
+.inner-banner-swiper,
+.inner-banner-swiper .swiper-wrapper,
+.inner-banner-swiper .swiper-slide {
+  height: 100%;
+}
+
+/* Make vertical outer slides full-screen */
+.swiper-vertical .swiper-slide {
+  height: 100vh !important;
+}
