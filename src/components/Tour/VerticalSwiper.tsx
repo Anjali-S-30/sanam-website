@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
-import { Swiper as SwiperType } from "swiper"; // Import Type
+import React, { useRef, useEffect } from "react";
+import { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Keyboard, Pagination } from "swiper/modules";
 
@@ -14,15 +14,17 @@ import TourList from "@/components/Tour/TourList";
 import Footer from "@/components/Footer";
 
 export default function VerticalSwiper() {
-  // 1. Create refs for the Swiper instance and the scrollable container
   const swiperRef = useRef<SwiperType | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef(0); // To track finger direction
 
   const swiperParams = {
     direction: "vertical" as const,
     modules: [Mousewheel, Keyboard, Pagination],
     slidesPerView: 1,
     speed: 800,
+    // CRITICAL: Let browser handle the initial touch for native scrolling
+    touchStartPreventDefault: false,
     mousewheel: {
       enabled: true,
       forceToAxis: true,
@@ -34,67 +36,115 @@ export default function VerticalSwiper() {
       clickable: true,
       dynamicBullets: true,
     },
-    // REMOVED "noSwipingClass" to allow touch logic to work
   };
 
-  // 2. Logic to Handle Scroll Trapping
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      if (!swiperRef.current) return;
-
-      const atTop = container.scrollTop === 0;
-      // Allow a small buffer (1px) for calculation errors
-      const atBottom = Math.abs(container.scrollHeight - container.scrollTop - container.clientHeight) <= 1;
-
-      if (atTop || atBottom) {
-        // If at edges, allow the Main Swiper to move
-        swiperRef.current.allowTouchMove = true;
-      } else {
-        // If in the middle of the list, LOCK the Main Swiper
+    // 1. Record where the finger landed
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+      // Default to "Locked" (Native Scroll) to be safe
+      if (swiperRef.current) {
         swiperRef.current.allowTouchMove = false;
       }
     };
 
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
+    // 2. Determine intent when the finger moves
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!swiperRef.current) return;
+      const swiper = swiperRef.current;
+
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - touchStartY.current; // Positive = Pulling Down, Negative = Pulling Up
+      
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const atTop = scrollTop <= 1; // 1px buffer
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 2; // 2px buffer
+
+      // LOGIC: Only unlock Swiper if we are at an edge AND pulling away from the content
+      
+      if (atTop && diff > 0) {
+        // At Top + Pulling Down -> Go to Banner
+        swiper.allowTouchMove = true;
+        swiper.allowSlidePrev = true;
+        swiper.allowSlideNext = false; // Block Footer
+      } 
+      else if (atBottom && diff < 0) {
+        // At Bottom + Pulling Up -> Go to Footer
+        swiper.allowTouchMove = true;
+        swiper.allowSlidePrev = false; // Block Banner
+        swiper.allowSlideNext = true;
+      } 
+      else {
+        // All other cases: Scrolling through the list
+        // Disable Swiper so the browser scrolls the text naturally
+        swiper.allowTouchMove = false;
+      }
+    };
+
+    // 3. Handle MouseWheel (Desktop/Laptop Trackpads)
+    const handleWheel = (e: WheelEvent) => {
+       if (!swiperRef.current) return;
+       const swiper = swiperRef.current;
+       const { scrollTop, scrollHeight, clientHeight } = container;
+       const atTop = scrollTop <= 0;
+       const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+       // If scrolling UP at the Top OR scrolling DOWN at the Bottom -> Enable Swiper
+       if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+           swiper.allowTouchMove = true;
+           if(swiper.mousewheel) swiper.mousewheel.enable();
+       } else {
+           // Otherwise, lock it for native scroll
+           swiper.allowTouchMove = false;
+           if(swiper.mousewheel) swiper.mousewheel.disable();
+       }
+    };
+
+    // Attach Listeners
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    // 'passive: false' allows us to intervene if necessary, though we mostly use logic locks
+    container.addEventListener("touchmove", handleTouchMove, { passive: false }); 
+    container.addEventListener("wheel", handleWheel, { passive: true });
+
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("wheel", handleWheel);
+    };
   }, []);
 
   return (
     <div className="h-screen w-full bg-black">
       <Swiper 
         {...swiperParams} 
-        onSwiper={(swiper) => (swiperRef.current = swiper)} // Capture Swiper instance
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
         className="vertical-swiper h-full w-full"
       >
-        
-        {/* --- SLIDE 1: BANNER --- */}
+        {/* SLIDE 1: BANNER */}
         <SwiperSlide className="h-full w-full bg-black">
           <TourBanner />
         </SwiperSlide>
 
-        {/* --- SLIDE 2: TOUR LIST --- */}
+        {/* SLIDE 2: TOUR LIST */}
         <SwiperSlide className="h-full w-full bg-black">
-          {/* REMOVED 'swiper-no-swiping'. 
-             ADDED ref={scrollContainerRef} to track scrolling.
-          */}
           <div 
             ref={scrollContainerRef}
-            className="h-full w-full overflow-y-auto custom-scrollbar relative"
+            // 'overscroll-y-contain' prevents the whole page from bouncing, keeping the scroll inside
+            className="h-full w-full overflow-y-auto custom-scrollbar relative overscroll-y-contain touch-pan-y"
           >
             <TourList />
           </div>
         </SwiperSlide>
 
-        {/* --- SLIDE 3: FOOTER --- */}
+        {/* SLIDE 3: FOOTER */}
         <SwiperSlide className="h-full w-full bg-neutral-900">
           <div className="h-full w-full flex items-center justify-center">
             <Footer />
           </div>
         </SwiperSlide>
-
       </Swiper>
     </div>
   );
