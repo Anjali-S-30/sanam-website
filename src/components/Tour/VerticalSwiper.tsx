@@ -16,14 +16,13 @@ import Footer from "@/components/Footer";
 export default function VerticalSwiper() {
   const swiperRef = useRef<SwiperType | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const touchStartY = useRef(0); // To track finger direction
+  const touchStartY = useRef(0); 
 
   const swiperParams = {
     direction: "vertical" as const,
     modules: [Mousewheel, Keyboard, Pagination],
     slidesPerView: 1,
     speed: 800,
-    // CRITICAL: Let browser handle the initial touch for native scrolling
     touchStartPreventDefault: false,
     mousewheel: {
       enabled: true,
@@ -42,70 +41,61 @@ export default function VerticalSwiper() {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    // 1. Record where the finger landed
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY.current = e.touches[0].clientY;
-      // Default to "Locked" (Native Scroll) to be safe
-      if (swiperRef.current) {
-        swiperRef.current.allowTouchMove = false;
-      }
     };
 
-    // 2. Determine intent when the finger moves
     const handleTouchMove = (e: TouchEvent) => {
       if (!swiperRef.current) return;
       const swiper = swiperRef.current;
 
+      // Only run this logic if we are on the Tour List slide (Index 1)
+      if (swiper.activeIndex !== 1) return;
+
       const currentY = e.touches[0].clientY;
-      const diff = currentY - touchStartY.current; // Positive = Pulling Down, Negative = Pulling Up
+      const diff = currentY - touchStartY.current;
       
       const { scrollTop, scrollHeight, clientHeight } = container;
-      const atTop = scrollTop <= 1; // 1px buffer
-      const atBottom = scrollTop + clientHeight >= scrollHeight - 2; // 2px buffer
+      const atTop = scrollTop <= 1; 
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 2; 
 
-      // LOGIC: Only unlock Swiper if we are at an edge AND pulling away from the content
-      
       if (atTop && diff > 0) {
         // At Top + Pulling Down -> Go to Banner
         swiper.allowTouchMove = true;
         swiper.allowSlidePrev = true;
-        swiper.allowSlideNext = false; // Block Footer
+        swiper.allowSlideNext = false; 
       } 
       else if (atBottom && diff < 0) {
         // At Bottom + Pulling Up -> Go to Footer
         swiper.allowTouchMove = true;
-        swiper.allowSlidePrev = false; // Block Banner
+        swiper.allowSlidePrev = false; 
         swiper.allowSlideNext = true;
       } 
       else {
-        // All other cases: Scrolling through the list
-        // Disable Swiper so the browser scrolls the text naturally
+        // Middle of list -> Native Scroll only
         swiper.allowTouchMove = false;
       }
     };
 
-    // 3. Handle MouseWheel (Desktop/Laptop Trackpads)
     const handleWheel = (e: WheelEvent) => {
        if (!swiperRef.current) return;
        const swiper = swiperRef.current;
+       if (swiper.activeIndex !== 1) return;
+
        const { scrollTop, scrollHeight, clientHeight } = container;
        const atTop = scrollTop <= 0;
        const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
 
-       // If scrolling UP at the Top OR scrolling DOWN at the Bottom -> Enable Swiper
        if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
            swiper.allowTouchMove = true;
            if(swiper.mousewheel) swiper.mousewheel.enable();
        } else {
-           // Otherwise, lock it for native scroll
            swiper.allowTouchMove = false;
            if(swiper.mousewheel) swiper.mousewheel.disable();
        }
     };
 
-    // Attach Listeners
     container.addEventListener("touchstart", handleTouchStart, { passive: true });
-    // 'passive: false' allows us to intervene if necessary, though we mostly use logic locks
     container.addEventListener("touchmove", handleTouchMove, { passive: false }); 
     container.addEventListener("wheel", handleWheel, { passive: true });
 
@@ -121,25 +111,29 @@ export default function VerticalSwiper() {
       <Swiper 
         {...swiperParams} 
         onSwiper={(swiper) => (swiperRef.current = swiper)}
+        // --- THE FIX IS HERE ---
+        // Whenever the slide changes (e.g. landing on Footer), reset all locks.
+        onSlideChange={(swiper) => {
+            swiper.allowTouchMove = true;
+            swiper.allowSlideNext = true;
+            swiper.allowSlidePrev = true;
+            if(swiper.mousewheel) swiper.mousewheel.enable();
+        }}
         className="vertical-swiper h-full w-full"
       >
-        {/* SLIDE 1: BANNER */}
         <SwiperSlide className="h-full w-full bg-black">
           <TourBanner />
         </SwiperSlide>
 
-        {/* SLIDE 2: TOUR LIST */}
         <SwiperSlide className="h-full w-full bg-black">
           <div 
             ref={scrollContainerRef}
-            // 'overscroll-y-contain' prevents the whole page from bouncing, keeping the scroll inside
             className="h-full w-full overflow-y-auto custom-scrollbar relative overscroll-y-contain touch-pan-y"
           >
             <TourList />
           </div>
         </SwiperSlide>
 
-        {/* SLIDE 3: FOOTER */}
         <SwiperSlide className="h-full w-full bg-neutral-900">
           <div className="h-full w-full flex items-center justify-center">
             <Footer />
