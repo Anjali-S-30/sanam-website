@@ -19,10 +19,10 @@ export default function TourPage() {
 
     return () => {
       setNavbarStyle({
-        background: "bg-white",
-        logo: "",
-        text: "text-neutral-700",
-        hamburger: "text-black",
+        background: "bg-transparent",
+        logo: "text-white",
+        text: "text-white",
+        hamburger: "text-white",
       });
     };
   }, [setNavbarStyle]);
