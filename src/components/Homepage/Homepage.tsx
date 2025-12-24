@@ -39,6 +39,14 @@ export default function Homepage() {
     const styles = isDesktop ? desktopSlideStyles : mobileSlideStyles;
     const currentStyle = styles[activeSlide] || styles[0];
     setNavbarStyle(currentStyle.navbar);
+    return () => {
+      setNavbarStyle({
+        background: "bg-transparent",
+        logo: "text-neutral-900",
+        text: "text-neutral-800",
+        hamburger: "text-black",
+      });
+    };
   }, [activeSlide, isDesktop, setNavbarStyle]);
 
   // --- 2. LISTEN FOR SUBSCRIBE EVENT ---

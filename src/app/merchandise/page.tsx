@@ -1,4 +1,29 @@
+"use client";
+
+import { useEffect } from "react";
+import { useNavbar } from "@/context/NavbarContext";
+
 export default function MerchandiseComingSoon() {
+  const { setNavbarStyle } = useNavbar();
+
+  useEffect(() => {
+    setNavbarStyle({
+      background: "bg-transparent",
+      logo: "text-white",
+      text: "text-white",
+      hamburger: "text-white",
+    });
+
+    return () => {
+      setNavbarStyle({
+        background: "bg-transparent",
+        logo: "text-neutral-900",
+        text: "text-neutral-800",
+        hamburger: "text-black",
+      });
+    };
+  }, [setNavbarStyle]);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white flex items-center justify-center px-6 py-16">
       <div className="relative w-full max-w-5xl overflow-hidden rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
