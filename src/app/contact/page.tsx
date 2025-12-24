@@ -36,20 +36,20 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-neutral-50 text-black">
-      <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 md:py-20 lg:py-24">
-        <div className="text-center space-y-3 sm:space-y-4">
+      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-5 sm:py-14 md:px-6 md:py-20 lg:py-24">
+        <div className="text-center space-y-2 sm:space-y-3 md:space-y-4 px-1">
           <p className="font-bold text-neutral-500 tracking-wider uppercase text-xs mb-2">
             Contact
           </p>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight">
             For gigs, collaborations, or media enquiries, reach out to us directly!
           </h1>
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-600 font-light leading-relaxed px-1">
+          <p className="max-w-2xl mx-auto text-base sm:text-lg text-neutral-600 font-light leading-relaxed">
             We keep it personal. Tell us about your event, city, and date ideas—our team will get back fast.
           </p>
         </div>
 
-        <div className="mt-10 md:mt-12 grid gap-6 md:gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-8 sm:mt-10 md:mt-12 grid gap-5 sm:gap-6 md:gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           {/* Left: Contact methods */}
           <div className="space-y-4">
             <p className="text-sm uppercase tracking-[0.2em] text-neutral-500">Direct lines</p>
@@ -57,7 +57,7 @@ export default function ContactPage() {
             <div className="flex flex-col gap-4">
               <a
                 href={emailHref}
-                className="group flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-4 py-4 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl"
+                className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-4 py-4 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl"
               >
                 <div className="flex items-start gap-3">
                   <span className="rounded-lg bg-neutral-100 p-2 text-neutral-900">
@@ -69,14 +69,14 @@ export default function ContactPage() {
                     <p className="text-sm text-neutral-600">Pre-fills your booking subject.</p>
                   </div>
                 </div>
-                <ArrowUpRight className="h-5 w-5 text-neutral-500 transition group-hover:text-black" />
+                <ArrowUpRight className="h-5 w-5 text-neutral-500 transition group-hover:text-black self-start sm:self-auto" />
               </a>
 
               <a
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-4 py-4 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl"
+                className="group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-4 py-4 shadow-xl transition hover:-translate-y-0.5 hover:shadow-2xl"
               >
                 <div className="flex items-start gap-3">
                   <span className="rounded-lg bg-neutral-100 p-2 text-neutral-900">
@@ -88,11 +88,11 @@ export default function ContactPage() {
                     <p className="text-sm text-neutral-600">Opens with a pre-filled message.</p>
                   </div>
                 </div>
-                <ArrowUpRight className="h-5 w-5 text-neutral-500 transition group-hover:text-black" />
+                <ArrowUpRight className="h-5 w-5 text-neutral-500 transition group-hover:text-black self-start sm:self-auto" />
               </a>
             </div>
 
-            <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+            <div className="mt-3 grid gap-3 text-sm sm:grid-cols-2">
               <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-2 shadow-sm">
                 <Clock className="h-4 w-4 text-neutral-900" />
                 <span className="text-neutral-700">We aim to reply within 24 hours.</span>
@@ -122,7 +122,7 @@ export default function ContactPage() {
             <div className="border-t border-neutral-200 pt-5">
               <h2 className="text-xl font-semibold text-black mb-3">Send us your details</h2>
               <form className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                   <div className="space-y-1">
                     <label htmlFor="event" className="text-sm font-medium text-neutral-700">
                       Event name & city
