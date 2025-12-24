@@ -77,7 +77,7 @@ export default function TourBanner() {
 
             {/* TEXT OVERLAY */}
             <div className="absolute bottom-10 left-6 md:left-10 z-20 text-white max-w-3xl pr-6">
-              <h3 className="uppercase font-bold tracking-widest text-lg md:text-2xl mb-4 md:mb-6">
+              <h3 className="hidden md:block uppercase font-bold tracking-widest text-lg md:text-2xl mb-4 md:mb-6">
                 {event.eventCity}
               </h3>
 
