@@ -127,8 +127,8 @@
 /* Card Content */
 .mobile-card-content {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .mobile-card-text {
@@ -154,6 +154,7 @@
   font-size: 0.9rem;
   color: #f5f5f5;
   line-height: 1.5;
+  text-align: justify;
   margin-top: 0.25rem;
   margin-bottom: 0.75rem;
 }
@@ -173,16 +174,4 @@
   color: white;
 }
 
-/* Profile Image */
-.mobile-card-image {
-  position: relative;
-  height: 110px;
-  width: 80px;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.mobile-card-image img {
-  object-fit: cover;
-}
+/* Image removed from mobile card */
