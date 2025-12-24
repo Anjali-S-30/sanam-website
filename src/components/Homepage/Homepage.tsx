@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { Swiper as SwiperType } from "swiper"; // Import Type
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, EffectCreative, Keyboard, Mousewheel, Pagination } from "swiper/modules";
 import type { SwiperProps } from "swiper/react";
@@ -12,7 +13,6 @@ import Footer from "../Footer";
 import InteractiveMobileSlide from "../InteractiveMobileSlide";
 import { bandMembers } from "../data/bandMembers";
 
-// --- 1. IMPORT THE STYLES AND THE CONTEXT HOOK ---
 import { desktopSlideStyles, mobileSlideStyles } from "../config/slide-styles";
 import { useNavbar } from "@/context/NavbarContext";
 
@@ -22,10 +22,11 @@ import "./Homepage.css";
 
 export default function Homepage() {
   const [isDesktop, setIsDesktop] = useState(true);
-  // --- 2. ADD LOGIC TO TRACK SLIDES AND UPDATE THE NAVBAR ---
   const [activeSlide, setActiveSlide] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null); // 1. Store Swiper Instance
   const { setNavbarStyle } = useNavbar();
 
+  // --- RESIZE HANDLER ---
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
     handleResize();
@@ -33,12 +34,52 @@ export default function Homepage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // This effect runs whenever the slide or screen size changes
+  // --- NAVBAR STYLE UPDATER ---
   useEffect(() => {
     const styles = isDesktop ? desktopSlideStyles : mobileSlideStyles;
     const currentStyle = styles[activeSlide] || styles[0];
     setNavbarStyle(currentStyle.navbar);
   }, [activeSlide, isDesktop, setNavbarStyle]);
+
+  // --- 2. LISTEN FOR SUBSCRIBE EVENT ---
+  useEffect(() => {
+    const handleSubscribeScroll = () => {
+      if (!swiperInstance) return;
+
+      // CALCULATE THE SUBSCRIBE SLIDE INDEX
+      // Desktop: 0(Hero) -> 1(Band) -> 2(Insta) -> 3(Subscribe)
+      // Mobile: 0(Hero) -> 1..N(Band) -> N+1(Insta) -> N+2(Subscribe)
+      let subscribeIndex = 3; 
+
+      if (!isDesktop) {
+        subscribeIndex = 1 + bandMembers.length + 1; 
+      }
+
+      // Smoothly slide to the calculated index
+      swiperInstance.slideTo(subscribeIndex);
+    };
+
+    // Listen for the custom event dispatched by Navbar
+    window.addEventListener("triggerSubscribeScroll", handleSubscribeScroll);
+
+    return () => {
+      window.removeEventListener("triggerSubscribeScroll", handleSubscribeScroll);
+    };
+  }, [swiperInstance, isDesktop]);
+  useEffect(() => {
+    const handleHomeScroll = () => {
+      if (swiperInstance) {
+        swiperInstance.slideTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    window.addEventListener("triggerHomeScroll", handleHomeScroll);
+    return () => {
+      window.removeEventListener("triggerHomeScroll", handleHomeScroll);
+    };
+  }, [swiperInstance]);
 
 
   const swiperParameters: SwiperProps = {
@@ -55,20 +96,18 @@ export default function Homepage() {
     mousewheel: { enabled: true, forceToAxis: true },
     pagination: { clickable: true },
     watchSlidesProgress: true,
-    // --- 3. ADD THE onSlideChange HANDLER TO THE SLIDER ---
-    onSlideChange: (swiper) => {
-      setActiveSlide(swiper.realIndex);
-    },
+    onSlideChange: (swiper) => setActiveSlide(swiper.realIndex),
+    onSwiper: (swiper) => setSwiperInstance(swiper), // 3. Capture Instance
   };
 
   return (
     <Swiper {...swiperParameters} className="h-screen w-screen">
-      {/* Hero section */}
+      {/* Hero section (Index 0) */}
       <SwiperSlide>
         <HeroCarousel />
       </SwiperSlide>
 
-      {/* Band Members */}
+      {/* Band Members (Index 1 on Desktop / 1..N on Mobile) */}
       {isDesktop ? (
         <SwiperSlide className="bg-white overflow-y-auto pt-24">
           <DesktopBandSection />
@@ -88,7 +127,10 @@ export default function Homepage() {
 
       {/* Subscribe section */}
       <SwiperSlide className="bg-white overflow-y-auto">
-        <SubscribeSection />
+        {/* ADD ID FOR FALLBACK, BUT SWIPER WILL HANDLE NAV */}
+        <div id="subscribe" className="h-full w-full">
+           <SubscribeSection />
+        </div>
       </SwiperSlide>
 
       {/* Footer */}

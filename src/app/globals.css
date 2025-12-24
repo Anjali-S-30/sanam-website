@@ -29,3 +29,28 @@ body {
 html {
   scroll-behavior: smooth;
 }
+/* globals.css */
+.swiper-pagination-bullet {
+  background: white;
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+}
+.swiper-pagination-bullet-active {
+  background: #FFFFFF !important; 
+  opacity: 1;
+  width: 24px; /* Makes active dot wider like a pill */
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+/* Make inner swiper fill available height */
+.inner-banner-swiper,
+.inner-banner-swiper .swiper-wrapper,
+.inner-banner-swiper .swiper-slide {
+  height: 100%;
+}
+
+/* Make vertical outer slides full-screen */
+.swiper-vertical .swiper-slide {
+  height: 100vh !important;
+}

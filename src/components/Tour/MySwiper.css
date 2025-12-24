@@ -1,0 +1,33 @@
+/* Ensure Swiper fills the screen */
+.vertical-swiper {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Fix Pagination Color for Dark Theme */
+.swiper-pagination-bullet {
+  background: white;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  background: #fbbf24; /* Amber/Yellow to match your theme */
+  opacity: 1;
+}
+
+/* Custom Scrollbar for the Tour List Slide */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}

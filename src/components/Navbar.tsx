@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type React from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,7 +15,6 @@ type NavLink = {
   href: string;
   label: string;
 };
-
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/music", label: "Music" },
@@ -49,22 +49,34 @@ export default function Navbar() {
 
   // 3. SPECIAL FUNCTION TO HANDLE SCROLL
   const handleSubscribeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault(); // Stop default Link behavior
+    e.preventDefault(); // STOP standard anchor jump
     setOpen(false); // Close mobile menu
 
-    // Check if we are already on the Home Page
     if (pathname === "/") {
-      const element = document.getElementById("subscribe");
-      if (element) {
-        // Smooth scroll to the element
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      // If we are on Home, just tell Homepage to slide
+      window.dispatchEvent(new Event("triggerSubscribeScroll"));
     } else {
-      // If on another page, navigate to home with hash
-      router.push("/#subscribe");
+      // If on another page, go to home (Home will default to top, user can click again)
+      // Alternatively, you can use query params to auto-scroll on load, 
+      // but for now let's just go home safely.
+      router.push("/");
+
+      // Optional: Try to trigger it after a small delay if you want auto-scroll
+      setTimeout(() => {
+        window.dispatchEvent(new Event("triggerSubscribeScroll"));
+      }, 500);
     }
   };
-
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.dispatchEvent(new Event("triggerHomeScroll"));
+      setOpen(false);
+    } else {
+      setOpen(false);
+    }
+  };
+  // ... rest of the component
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -78,8 +90,12 @@ export default function Navbar() {
         aria-label="Global"
       >
         {/* LOGO SECTION */}
-        <Link href="/" className="flex items-center gap-3" aria-label="SANAM — Home">
-          <Logo className={`h-7 w-7 ${logo}`} />
+        <Link
+          href="/"
+          onClick={handleHomeClick}
+          className="flex items-center gap-3"
+          aria-label="SANAM — Home"
+        >          <Logo className={`h-7 w-7 ${logo}`} />
           <NameLogo
             style={{ height: "1.7rem", width: "auto" }}
             className={`object-contain ${logo}`}
@@ -89,7 +105,7 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
         <div className="hidden items-center gap-6 md:flex">
           {NAV_LINKS.map((item) => {
-            
+
             // ----------------------------------------------------
             // FIX IS HERE: SUBSCRIBE BUTTON LOGIC
             // ----------------------------------------------------
@@ -108,19 +124,21 @@ export default function Navbar() {
 
             // STANDARD LINKS
             const isActive = pathname === item.href;
+            const isHome = item.href === "/";
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={isHome ? handleHomeClick : undefined}
                 className={`group relative px-1 text-sm uppercase tracking-widest ${text}`}
               >
                 <span className="invisible font-medium" aria-hidden="true">
                   {item.label}
                 </span>
                 <span
-                  className={`absolute inset-0 flex items-center justify-center transition-all ${
-                    isActive ? "font-medium" : "font-light group-hover:font-medium"
-                  }`}
+                  className={`absolute inset-0 flex items-center justify-center transition-all ${isActive ? "font-medium" : "font-light group-hover:font-medium"
+                    }`}
                 >
                   {item.label}
                 </span>
@@ -157,7 +175,7 @@ export default function Navbar() {
             <div className="h-full w-full overflow-y-auto px-6 pt-24 pb-12">
               <div className="flex flex-col items-center space-y-8 text-center">
                 {NAV_LINKS.map((item) => {
-                  
+
                   // Mobile Subscribe Button Style
                   if (item.label === "Subscribe") {
                     return (
@@ -173,11 +191,12 @@ export default function Navbar() {
                   }
 
                   const isActive = pathname === item.href;
+                  const isHome = item.href === "/";
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => setOpen(false)}
+                      onClick={isHome ? handleHomeClick : () => setOpen(false)}
                       className={`block text-xl uppercase tracking-widest text-white transition-all 
                         ${isActive ? "font-medium" : "font-light hover:font-medium"}`}
                     >
