@@ -159,9 +159,6 @@ export default function SubscribeSection() {
                           <h4 className="font-semibold text-black">
                             {feature.title}
                           </h4>
-                          <p className="mt-1 text-sm text-neutral-600 font-light">
-                            {feature.description}
-                          </p>
                         </div>
                       </div>
                     ))}
