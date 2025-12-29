@@ -54,14 +54,10 @@ export default function Homepage() {
     const handleSubscribeScroll = () => {
       if (!swiperInstance) return;
 
-      // CALCULATE THE SUBSCRIBE SLIDE INDEX
-      // Desktop: 0(Hero) -> 1(Band) -> 2(Insta) -> 3(Subscribe)
-      // Mobile: 0(Hero) -> 1..N(Band) -> N+1(Insta) -> N+2(Subscribe)
-      let subscribeIndex = 3; 
+      const totalSlides = swiperInstance.slides?.length ?? 0;
+      const subscribeIndex = Math.max(totalSlides - 2, 0);
 
-      if (!isDesktop) {
-        subscribeIndex = 1 + bandMembers.length + 1; 
-      }
+     
 
       // Smoothly slide to the calculated index
       swiperInstance.slideTo(subscribeIndex);
@@ -128,10 +124,7 @@ export default function Homepage() {
         ))
       )}
 
-      {/* Instagram feed placeholder */}
-      <SwiperSlide className="bg-gray-200 flex items-center justify-center">
-        <h2 className="text-4xl font-bold">THIS SLIDE IS FOR INSTAGRAM FEED</h2>
-      </SwiperSlide>
+     
 
       {/* Subscribe section */}
       <SwiperSlide className="bg-white overflow-y-auto">

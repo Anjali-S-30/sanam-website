@@ -13,7 +13,7 @@ export const bandMembers = [
   },
   {
     id: 2,
-    name: "Venky S",
+    name: "Venkat Subramaniyam",
     title: "Bass & Arranger",
     description:
       "The sonic architect of the band. Venky's deep understanding of sound, harmony, and groove turns every track into an experience. His basslines and arrangements give SANAM its pulse. Thoughtful, musical, and alive with soul.",
