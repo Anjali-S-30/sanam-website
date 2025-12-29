@@ -14,7 +14,12 @@ export default function LayoutStepFinal() {
 
         {/* LEFT — BIG PORTRAIT IMAGE (≈30%) */}
         <div className="flex-[0.9] flex items-center">
-          <div className="relative aspect-[3/4] h-full overflow-hidden rounded-2xl">
+          <a
+            href={activeMember.instaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative block aspect-[3/4] h-full overflow-hidden rounded-2xl"
+          >
 
             {/* IMAGE */}
             <Image
@@ -38,7 +43,12 @@ export default function LayoutStepFinal() {
               </p>
             </div>
 
-          </div>
+            {/* HOVER CTA */}
+            <div className="pointer-events-none absolute right-3 top-3 rounded-full bg-black/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+              Go to {activeMember.name}'s Insta →
+            </div>
+
+          </a>
         </div>
 
         {/* RIGHT — IMAGE GROUP (≈70%) */}
@@ -47,38 +57,41 @@ export default function LayoutStepFinal() {
             <div className="grid h-full w-full grid-cols-2 gap-12">
 
               {bandMembers.map((member) => (
-                <div
-              key={member.id}
-              onMouseEnter={() => setActiveMember(member)}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl"
-            >
-              {/* THUMB IMAGE */}
-              <Image
-                src={member.img}
-                alt={member.name}
-                fill
-                className={`object-cover object-top transition-all duration-300 ${
-                  activeMember.id === member.id
-                    ? "grayscale-0"
-                    : "grayscale group-hover:grayscale-0"
-                }`}
-              />
+                <a
+                  key={member.id}
+                  href={member.instaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setActiveMember(member)}
+                  className="group relative block cursor-pointer overflow-hidden rounded-2xl"
+                >
+                  {/* THUMB IMAGE */}
+                  <Image
+                    src={member.img}
+                    alt={member.name}
+                    fill
+                    className={`object-cover object-top transition-all duration-300 ${
+                      activeMember.id === member.id
+                        ? "grayscale-0"
+                        : "grayscale group-hover:grayscale-0"
+                    }`}
+                  />
 
-              {/* DARK OVERLAY */}
-              {activeMember.id !== member.id && (
-                <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0" />
-              )}
+                  {/* DARK OVERLAY */}
+                  {activeMember.id !== member.id && (
+                    <div className="absolute inset-0 bg-black/10 transition-opacity duration-300 group-hover:opacity-0" />
+                  )}
 
-              {/* TEXT */}
-              <div className="absolute bottom-0 left-0 p-5">
-                <h3 className="text-lg font-semibold text-white">
-                  {member.name}
+                  {/* TEXT */}
+                  <div className="absolute bottom-0 left-0 p-5">
+                    <h3 className="text-lg font-semibold text-white">
+                      {member.name}
                     </h3>
                     <p className="text-sm text-white/80">
                       {member.title}
                     </p>
                   </div>
-                </div>
+                </a>
               ))}
 
             </div>

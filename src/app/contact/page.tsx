@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { Mail, MessageCircle, ArrowUpRight, Clock, MapPin } from "lucide-react";
 import { useNavbar } from "@/context/NavbarContext";
 
-const EMAIL = "booking@sanamofficial.com";
+const EMAIL = "wearesanam@gmail.com";
 const EMAIL_SUBJECT = "Gig, Collaboration, or Media Enquiry";
-const WHATSAPP_NUMBER = "919876543210";
+const WHATSAPP_NUMBER = "919699969940";
 const WHATSAPP_MESSAGE =
   "Hi SANAM team! I'd love to talk about gigs, collaborations, or media enquiries.";
 
