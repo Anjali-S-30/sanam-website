@@ -49,23 +49,32 @@ export default function Navbar() {
 
   // 3. SPECIAL FUNCTION TO HANDLE SCROLL
   const handleSubscribeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault(); // STOP standard anchor jump
-    setOpen(false); // Close mobile menu
+    e.preventDefault();
+    setOpen(false);
+
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 1024;
 
     if (pathname === "/") {
-      // If we are on Home, just tell Homepage to slide
       window.dispatchEvent(new Event("triggerSubscribeScroll"));
-    } else {
-      // If on another page, go to home (Home will default to top, user can click again)
-      // Alternatively, you can use query params to auto-scroll on load, 
-      // but for now let's just go home safely.
-      router.push("/");
-
-      // Optional: Try to trigger it after a small delay if you want auto-scroll
-      setTimeout(() => {
-        window.dispatchEvent(new Event("triggerSubscribeScroll"));
-      }, 500);
+      return;
     }
+
+    try {
+      sessionStorage.setItem("goToSubscribe", "true");
+    } catch {
+      /* best effort */
+    }
+    if (isMobile) {
+      router.push("/#subscribe");
+      return;
+    }
+
+    router.push("/");
+
+    // Fire a follow-up event after navigation so Home can listen and slide (desktop)
+    setTimeout(() => {
+      window.dispatchEvent(new Event("triggerSubscribeScroll"));
+    }, 300);
   };
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (pathname === "/") {
