@@ -62,7 +62,7 @@ export default function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 hover:opacity-75"
                   >
-                    <FaWhatsapp className="h-5 w-5" />
+                    <FaWhatsapp className="h-6 w-6" />
                     <span>+91 96999 69940</span>
                   </a>
                 </li>

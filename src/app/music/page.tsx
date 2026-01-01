@@ -1,7 +1,73 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import Image from "next/image";
+import { SiApplemusic, SiSpotify, SiYoutube, SiYoutubemusic } from "react-icons/si";
 import { useNavbar } from "@/context/NavbarContext";
+
+const SaregamaIcon = () => (
+  <Image
+    src="/saregamaLogo.svg"
+    alt="Saregama"
+    width={34}
+    height={24}
+    className="h-6 w-auto"
+    priority
+  />
+);
+
+
+type Platform = {
+  id: string;
+  name: string;
+  href: string;
+  accent: string;
+  accentSoft: string;
+  icon: React.ElementType;
+};
+
+const platforms: Platform[] = [
+  {
+    id: "ytmusic",
+    name: "YouTube Music",
+    href: "https://music.youtube.com/channel/UCnrG75VRwdlp2wtwfpOCBRQ",
+    accent: "#ff1f45",
+    accentSoft: "rgba(255,31,69,0.12)",
+    icon: SiYoutubemusic,
+  },
+  {
+    id: "youtube",
+    name: "YouTube",
+    href: "https://www.youtube.com/@sanam",
+    accent: "#ff0000",
+    accentSoft: "rgba(255,0,0,0.12)",
+    icon: SiYoutube,
+  },
+  {
+    id: "spotify",
+    name: "Spotify",
+    href: "https://open.spotify.com/artist/7o7doCwqft91WC690aglWC",
+    accent: "#1db954",
+    accentSoft: "rgba(29,185,84,0.12)",
+    icon: SiSpotify,
+  },
+  {
+    id: "apple",
+    name: "Apple Music",
+    href: "https://music.apple.com/us/artist/sanam/735721518",
+    accent: "#f94c57",
+    accentSoft: "rgba(249,76,87,0.12)",
+    icon: SiApplemusic,
+  },
+  {
+    id: "saregama",
+    name: "Saregama",
+    href: "https://www.saregama.com/artist/sanam_18435/",
+    accent: "#fcbf2d",
+    accentSoft: "rgba(252,191,45,0.15)",
+    icon: SaregamaIcon,
+  },
+];
 
 export default function MusicComingSoon() {
   const { setNavbarStyle } = useNavbar();
@@ -25,7 +91,7 @@ export default function MusicComingSoon() {
   }, [setNavbarStyle]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white flex items-center justify-center px-4 py-12 sm:px-6 sm:py-14 md:py-16">
+    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white flex flex-col items-center gap-10 px-4 py-12 sm:px-6 sm:py-14 md:py-16">
       <div className="relative w-full max-w-4xl overflow-hidden rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(168,85,247,0.22),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.18),transparent_32%),radial-gradient(circle_at_50%_75%,rgba(236,72,153,0.16),transparent_35%)] blur-3xl" aria-hidden />
 
@@ -82,6 +148,33 @@ export default function MusicComingSoon() {
           </div>
         </div>
       </div>
+
+      <section className="w-full max-w-4xl rounded-[20px] border border-white/10 bg-white/5 px-5 py-7 sm:px-6 sm:py-8 shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">
+          Listen to us on
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+          {platforms.map((platform) => {
+            const Icon = platform.icon;
+            return (
+              <a
+                key={platform.id}
+                href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={platform.name}
+                title={platform.name}
+                className="group grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition hover:-translate-y-0.5 hover:border-white/60 hover:shadow-[0_14px_36px_rgba(0,0,0,0.45)]"
+                style={{ color: platform.accent }}
+              >
+                <span className="sr-only">{platform.name}</span>
+                <Icon className="h-7 w-7 drop-shadow-[0_6px_12px_rgba(0,0,0,0.25)]" />
+              </a>
+            );
+          })}
+        </div>
+      </section>
     </main>
   );
 }
