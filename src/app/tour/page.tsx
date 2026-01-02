@@ -19,9 +19,9 @@ export default function TourPage() {
 
     return () => {
       setNavbarStyle({
-        background: "bg-white",
-        logo: "",
-        text: "text-neutral-700",
+        background: "bg-transparent",
+        logo: "text-neutral-900",
+        text: "text-neutral-800",
         hamburger: "text-black",
       });
     };

@@ -52,16 +52,6 @@ export default function InteractiveMobileSlide({ member }: { member: BandMember 
                   Tap to see {member.name}'s Instagram profile
                 </div>
               </div>
-
-              <div className="mobile-card-image">
-                <Image
-                  src={member.img}
-                  alt={member.name}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              </div>
             </div>
           </div>
         </a>

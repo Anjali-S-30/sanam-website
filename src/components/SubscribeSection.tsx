@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Music, Ticket, Users, ChevronDown, ArrowRight } from "lucide-react";
 
@@ -30,6 +30,12 @@ const features = [
 
 export default function SubscribeSection() {
   const [openSection, setOpenSection] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setOpenSection("form");
+    }
+  }, []);
   const toggleSection = (section: string) =>
     setOpenSection(openSection === section ? null : section);
 
@@ -159,9 +165,6 @@ export default function SubscribeSection() {
                           <h4 className="font-semibold text-black">
                             {feature.title}
                           </h4>
-                          <p className="mt-1 text-sm text-neutral-600 font-light">
-                            {feature.description}
-                          </p>
                         </div>
                       </div>
                     ))}

@@ -22,9 +22,9 @@ const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
 // Create a Provider component that will wrap our app
 export const NavbarProvider = ({ children }: { children: ReactNode }) => {
   const [navbarStyle, setNavbarStyle] = useState<NavbarStyle>({
-    background: 'bg-white',
-    logo: '',
-    text: 'text-neutral-700',
+    background: 'bg-transparent',
+    logo: 'text-neutral-900',
+    text: 'text-neutral-800',
     hamburger: 'text-black',
   });
 

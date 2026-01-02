@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaXTwitter, FaInstagram, FaYoutube } from 'react-icons/fa6';
+import { FaXTwitter, FaInstagram, FaYoutube, FaWhatsapp, FaEnvelope } from 'react-icons/fa6';
 
 export default function Footer() {
+  const emailHref = "mailto:wearesanam@gmail.com";
+  const whatsappHref = `https://wa.me/919699969940?text=${encodeURIComponent(
+    "Hi SANAM team! I'd love to talk about gigs, collaborations, or media enquiries."
+  )}`;
   const socialLinks = [
-    { href: "https://x.com/sanam_official", icon: <FaXTwitter className="h-5 w-5" />, name: 'X (formerly Twitter)' },
-    { href: "https://www.instagram.com/sanamband/", icon: <FaInstagram className="h-5 w-5" />, name: 'Instagram' },
-    { href: "https://www.youtube.com/c/SANAM", icon: <FaYoutube className="h-5 w-5" />, name: 'YouTube' },
+    { href: "https://x.com/sanam_official", icon: <FaXTwitter className="h-7 w-7" />, name: 'X (formerly Twitter)' },
+    { href: "https://www.instagram.com/sanamband/", icon: <FaInstagram className="h-7 w-7" />, name: 'Instagram' },
+    { href: "https://www.youtube.com/c/SANAM", icon: <FaYoutube className="h-7 w-7" />, name: 'YouTube' },
   ];
 
   return (
@@ -45,9 +49,23 @@ export default function Footer() {
             <div>
               <p className="font-semibold text-white">Connect</p>
               <ul className="mt-6 space-y-4 text-sm">
-                <li><a href="mailto:management@sanam.in" className="hover:opacity-75">management@sanam.in</a></li>
-                {/* Note: Phone number is a placeholder */}
-                <li><a href="tel:+919876543210" className="hover:opacity-75">+91 98765 43210</a></li>
+                <li>
+                  <a href={emailHref} className="inline-flex items-center gap-2 hover:opacity-75">
+                    <FaEnvelope className="h-6 w-6" />
+                    <span>wearesanam@gmail.com</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 hover:opacity-75"
+                  >
+                    <FaWhatsapp className="h-6 w-6" />
+                    <span>+91 96999 69940</span>
+                  </a>
+                </li>
                 <li>Mumbai, India</li>
               </ul>
             </div>
