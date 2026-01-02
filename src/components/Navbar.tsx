@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type React from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,7 +15,6 @@ type NavLink = {
   href: string;
   label: string;
 };
-
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/music", label: "Music" },
@@ -67,7 +67,15 @@ export default function Navbar() {
       }, 500);
     }
   };
-
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.dispatchEvent(new Event("triggerHomeScroll"));
+      setOpen(false);
+    } else {
+      setOpen(false);
+    }
+  };
   // ... rest of the component
   return (
     <motion.header
@@ -82,8 +90,12 @@ export default function Navbar() {
         aria-label="Global"
       >
         {/* LOGO SECTION */}
-        <Link href="/" className="flex items-center gap-3" aria-label="SANAM — Home">
-          <Logo className={`h-7 w-7 ${logo}`} />
+        <Link
+          href="/"
+          onClick={handleHomeClick}
+          className="flex items-center gap-3"
+          aria-label="SANAM — Home"
+        >          <Logo className={`h-7 w-7 ${logo}`} />
           <NameLogo
             style={{ height: "1.7rem", width: "auto" }}
             className={`object-contain ${logo}`}
@@ -112,10 +124,13 @@ export default function Navbar() {
 
             // STANDARD LINKS
             const isActive = pathname === item.href;
+            const isHome = item.href === "/";
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={isHome ? handleHomeClick : undefined}
                 className={`group relative px-1 text-sm uppercase tracking-widest ${text}`}
               >
                 <span className="invisible font-medium" aria-hidden="true">
@@ -176,11 +191,12 @@ export default function Navbar() {
                   }
 
                   const isActive = pathname === item.href;
+                  const isHome = item.href === "/";
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      onClick={() => setOpen(false)}
+                      onClick={isHome ? handleHomeClick : () => setOpen(false)}
                       className={`block text-xl uppercase tracking-widest text-white transition-all 
                         ${isActive ? "font-medium" : "font-light hover:font-medium"}`}
                     >

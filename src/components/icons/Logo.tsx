@@ -1,6 +1,8 @@
+ "use client";
+
 // src/components/icons/Logo.tsx
 
-import React from 'react';
+import React from "react";
 
 export default function Logo({ className }: { className?: string }) {
   return (

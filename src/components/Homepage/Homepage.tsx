@@ -66,6 +66,21 @@ export default function Homepage() {
       window.removeEventListener("triggerSubscribeScroll", handleSubscribeScroll);
     };
   }, [swiperInstance, isDesktop]);
+  useEffect(() => {
+    const handleHomeScroll = () => {
+      if (swiperInstance) {
+        swiperInstance.slideTo(0);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    window.addEventListener("triggerHomeScroll", handleHomeScroll);
+    return () => {
+      window.removeEventListener("triggerHomeScroll", handleHomeScroll);
+    };
+  }, [swiperInstance]);
+
 
   const swiperParameters: SwiperProps = {
     modules: [A11y, EffectCreative, Keyboard, Mousewheel, Pagination],
