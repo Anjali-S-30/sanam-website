@@ -8,7 +8,7 @@ export const bandMembers = [
     description:
       "The face of the band and its defining voice. Sanam is the band leader with vision and emotion. A singer, songwriter, and dreamer whose voice carries words straight into the hearts of listeners across the world. His melodies bridge nostalgia and newness, making every song unforgettable.",
     img: "/faces/sanam0.jpg",
-    imgDetail: "/faces/sanam00.jpg", // Added detail image
+    imgDetail: "/faces/sanam00.png", // Added detail image
     instaUrl: "https://www.instagram.com/sanampuri/",
   },
   {

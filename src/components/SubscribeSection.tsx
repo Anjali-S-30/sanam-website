@@ -110,7 +110,7 @@ export default function SubscribeSection() {
                 type="submit"
                 className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-lg text-sm font-bold tracking-wider text-white bg-black hover:bg-neutral-800 transition-all duration-300"
               >
-                SUBSCRIBE to Newsletter
+                Don't miss a beat
                 <ArrowRight className="h-4 w-4" />
               </button>
             </form>
@@ -125,7 +125,7 @@ export default function SubscribeSection() {
         {/* Mobile Layout */}
         <div className="lg:hidden mt-12 border-t border-neutral-200">
           {/* Accordion: Features */}
-          <div className="border-b border-neutral-200 py-6">
+          <div className="border-b border-neutral-200 py-4">
             <button
               onClick={() => toggleSection("features")}
               className="w-full flex justify-between items-center text-left"
@@ -175,7 +175,7 @@ export default function SubscribeSection() {
           </div>
 
           {/* Accordion: Subscribe Form */}
-          <div className="border-b border-neutral-200 py-6">
+          <div className="border-b border-neutral-200 py-4">
             <button
               onClick={() => toggleSection("form")}
               className="w-full flex justify-between items-center text-left"
@@ -228,7 +228,7 @@ export default function SubscribeSection() {
                         type="submit"
                         className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-md text-sm font-bold tracking-wider text-white bg-black hover:bg-neutral-800 transition-all"
                         >
-                        SUBSCRIBE to Newsletter
+                        Don't miss a beat
                         <ArrowRight className="h-4 w-4" />
                         </button>
                     </form>
