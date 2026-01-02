@@ -123,7 +123,7 @@ export default function SubscribeSection() {
         </div>
 
         {/* Mobile Layout */}
-        <div className="lg:hidden mt-12 border-t border-neutral-200">
+        <div className="lg:hidden mt-6 border-t border-neutral-200">
           {/* Accordion: Features */}
           <div className="border-b border-neutral-200 py-4">
             <button
