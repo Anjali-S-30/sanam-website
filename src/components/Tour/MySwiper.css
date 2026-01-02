@@ -1,7 +1,7 @@
 /* Ensure Swiper fills the screen */
 .vertical-swiper {
   width: 100%;
-  height: 100vh;
+  height: var(--app-viewport-height);
 }
 
 /* Fix Pagination Color for Dark Theme */

@@ -45,7 +45,10 @@ const TourList = () => {
       </div>
 
       {/* --- 2. SCROLLABLE CONTENT (Pulled up to overlay background) --- */}
-      <div className="relative z-10 -mt-[100vh] px-4 md:px-0 py-12">
+      <div
+        className="relative z-10 px-4 md:px-0 py-12"
+        style={{ marginTop: "calc(var(--app-viewport-height) * -1)" }}
+      >
         <div className="container mx-auto max-w-5xl">
           
           {/* Header */}

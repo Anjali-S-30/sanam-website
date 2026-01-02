@@ -34,25 +34,26 @@ export default function Footer() {
               ))}
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-8 lg:col-span-2">
+          <div className="grid grid-cols-2 gap-6 min-[360px]:grid-cols-2 sm:gap-6 lg:gap-10 lg:col-span-2 items-start">
             <div>
               <p className="font-semibold text-white">Quick Links</p>
-              <ul className="mt-6 space-y-4 text-sm">
+              <ul className="mt-5 space-y-3 text-sm">
                 <li><Link href="/music" className="hover:opacity-75">Music</Link></li>
                 <li><Link href="/tour" className="hover:opacity-75">Tour Dates</Link></li>
-                <li><Link href="/about" className="hover:opacity-75">About Band</Link></li>
                 <li><Link href="/merchandise" className="hover:opacity-75">Merchandise</Link></li>
                 <li><Link href="/contact" className="hover:opacity-75">Contact</Link></li>
               </ul>
             </div>
             <div>
               <p className="font-semibold text-white">Connect</p>
-              <ul className="mt-6 space-y-4 text-sm">
+              <ul className="mt-5 space-y-3 text-sm">
                 <li>
-                  <a href={emailHref} className="inline-flex items-center gap-2 hover:opacity-75">
+                  <a
+                    href={emailHref}
+                    className="flex w-full max-w-full flex-wrap items-center gap-2 hover:opacity-75 break-all"
+                  >
                     <FaEnvelope className="h-6 w-6" />
-                    <span>wearesanam@gmail.com</span>
+                    <span className="min-w-0">wearesanam@gmail.com</span>
                   </a>
                 </li>
                 <li>
@@ -60,7 +61,7 @@ export default function Footer() {
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 hover:opacity-75"
+                    className="flex items-center gap-2 hover:opacity-75"
                   >
                     <FaWhatsapp className="h-6 w-6" />
                     <span>+91 96999 69940</span>
