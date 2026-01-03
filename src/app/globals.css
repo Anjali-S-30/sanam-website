@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --app-viewport-height: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --app-viewport-height: 100dvh;
+  }
 }
 
 @theme inline {
@@ -26,6 +33,24 @@ body {
   /* 5. Apply it globally */
   font-family: var(--font-sans);
 }
+
+.h-screen {
+  height: var(--app-viewport-height) !important;
+}
+
+.min-h-screen {
+  min-height: var(--app-viewport-height) !important;
+}
+
+.full-viewport {
+  height: var(--app-viewport-height);
+  min-height: var(--app-viewport-height);
+}
+
+.min-full-viewport {
+  min-height: var(--app-viewport-height);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -52,5 +77,5 @@ html {
 
 /* Make vertical outer slides full-screen */
 .swiper-vertical .swiper-slide {
-  height: 100vh !important;
+  height: var(--app-viewport-height) !important;
 }

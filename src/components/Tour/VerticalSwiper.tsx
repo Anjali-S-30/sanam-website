@@ -23,6 +23,8 @@ export default function VerticalSwiper() {
     modules: [Mousewheel, Keyboard, Pagination],
     slidesPerView: 1,
     speed: 800,
+    preventClicks: false,
+    preventClicksPropagation: false,
     touchStartPreventDefault: false,
     mousewheel: {
       enabled: true,

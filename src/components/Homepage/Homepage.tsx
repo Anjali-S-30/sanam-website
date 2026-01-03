@@ -149,6 +149,8 @@ export default function Homepage() {
     direction: "vertical",
     speed: 800,
     grabCursor: true,
+    preventClicks: false,
+    preventClicksPropagation: false,
     effect: "creative",
     creativeEffect: {
       prev: { translate: [0, "0%", -1] },
